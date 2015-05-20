@@ -1,5 +1,5 @@
 # CDListPy
-CDList for Python
+Catalog your CD Collections
 
 ## Requirements
 - wxPython
