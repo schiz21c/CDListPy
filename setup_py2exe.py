@@ -30,7 +30,8 @@ setup(
 			              'dll_excludes': ['mswsock.dll', 'powrprof.dll']
 			             }},
     windows = [{'script': 'CDListPy.py',
-                'icon_resources': [(1, 'ico/BeOS_BeBox_grey.ico')],
+                'icon_resources': [(1, 'ico/BeOS_BeBox_grey.ico'), (0, 'ico/BeOS_BeBox_grey.ico')],
+                'dest_base': 'CDListPy',
                 #'other_resources': [(24, 1, MANIFEST)],
                }],
     zipfile = None,
