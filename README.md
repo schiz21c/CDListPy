@@ -1,7 +1,8 @@
 # CDListPy
-CDList for Python
+Catalog your CD Collections
 
 ## Requirements
+- Python 2.x.x
 - wxPython
 - pywin32
 - yaml
@@ -11,13 +12,17 @@ CDList for Python
 - Works only in Windows
 
 ## Usage
-- Run img2py script before CDListPy. (Only once)
-``` shell
-python setup_img2py.py
-python CDListPy.py
-
+- Run img2py script at first. This will make res.py (Only once)
 ```
+python setup_img2py.py
+```
+
+- Run main script
+```
+python CDListPy.py
+```
+
 - (optional) Run py2exe script to create EXE file
-``` shell
+```
 python setup_py2exe.py
 ```
