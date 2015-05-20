@@ -2,6 +2,7 @@
 Catalog your CD Collections
 
 ## Requirements
+- Python 2.x.x
 - wxPython
 - pywin32
 - yaml
