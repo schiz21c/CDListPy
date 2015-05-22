@@ -75,7 +75,7 @@ class MainFrame(wx.Frame):
         self.loadDirdata()
         
     def loadSetting(self):
-        self.settingfn = os.environ['TEMP'] + os.path.sep + '__CDListPy__'
+        self.settingfn = os.environ['TEMP'] + os.path.sep + 'CDListPy.conf'
         if os.path.exists(self.settingfn):
             f = open(self.settingfn)
             self.setting = yaml.load(f.read())
