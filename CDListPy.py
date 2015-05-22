@@ -329,7 +329,7 @@ class ScanDialog(wx.Dialog):
         
 class DB:
 
-    def __init__(self, filename='cddb.db'):
+    def __init__(self, filename='CDListPy.db'):
         initTable = False
         if not os.path.exists(filename):
             initTable = True
