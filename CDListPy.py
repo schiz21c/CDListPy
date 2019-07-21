@@ -289,13 +289,14 @@ class ScanDialog(wx.Dialog):
         self.reloadFunc = None
 
         self.driveLabel = wx.StaticText(self, -1, 'Drive:', (10, 13))
-        self.driveCombo = wx.ComboBox(self, -1, '', (60, 10), (140, 22), style=wx.CB_READONLY)
+        self.driveText  = wx.TextCtrl(self, -1, '', (60, 10), (140, 22)) # ComboBox(self, -1, '', (60, 10), (140, 22), style=wx.CB_READONLY)
         self.nameLabel  = wx.StaticText(self, -1, 'Name:', (10, 43))
         self.nameText   = wx.TextCtrl(self, -1, '', (60, 40), (140, 22))
         self.scanButton = wx.Button(self, 1, 'Scan', (70, 80))
 
         self.Bind(wx.EVT_BUTTON, self.OnScan, id=1)
 
+        '''
         # Get CD-Rom drive
         for d in win32api.GetLogicalDriveStrings().split('\x00'):
             dt = win32file.GetDriveType(d)
@@ -310,6 +311,7 @@ class ScanDialog(wx.Dialog):
         else:
             self.driveCombo.Disable()
             self.scanButton.Disable()
+        '''
 
     def OnScan(self, event):
         if len(self.nameText.GetValue()) == 0:
@@ -317,8 +319,8 @@ class ScanDialog(wx.Dialog):
             return
 
         # Scan
-        for (dirpath, dirnames, filenames) in os.walk(self.driveCombo.GetValue()):
-            dirdata = dirpath.replace(self.driveCombo.GetValue(), self.nameText.GetValue() + '/')
+        for (dirpath, dirnames, filenames) in os.walk(self.driveText.GetValue()):
+            dirdata = dirpath.replace(self.driveText.GetValue(), self.nameText.GetValue() + '/')
 
             if dirdata[len(dirdata) - 1] == '/':
                 dirdata = dirdata[:-1]
