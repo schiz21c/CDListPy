@@ -1,7 +1,7 @@
 # CDListPy
 Catalog your CD Collections!
 
-You can list the contents of your data file in CD.
+You can list the contents of your data files.
 
 ## Requirements
 - Python 2.x.x
