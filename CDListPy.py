@@ -1,8 +1,13 @@
+#!/usr/bin/env python
+
 import os
 import sqlite3
 import wx
-import win32file
-import win32api
+
+# Deprecated
+#import win32file
+#import win32api
+
 import yaml
 import res
 
@@ -10,16 +15,16 @@ __version__ = '1.0.0 (2011-06-13)'
 
 
 class MainApp(wx.App):
-    
+
     def OnInit(self):
         frame = MainFrame()
         frame.Show()
         self.SetTopWindow(frame)
         return True
 
-        
+
 class MainFrame(wx.Frame):
-    
+
     def __init__(self):
         self.loadSetting()
 
@@ -69,13 +74,13 @@ class MainFrame(wx.Frame):
 
         self.scanDialog = None
         self.findDialog = None
-        
+
         self.Show(True) # Show first and load
 
         self.loadDirdata()
-        
+
     def loadSetting(self):
-        self.settingfn = os.environ['TEMP'] + os.path.sep + 'CDListPy.conf'
+        self.settingfn = '.' + os.path.sep + 'CDListPy.conf'
         if os.path.exists(self.settingfn):
             f = open(self.settingfn)
             self.setting = yaml.load(f.read())
@@ -98,19 +103,19 @@ class MainFrame(wx.Frame):
             self.setting['findColumnFile'] = self.findDialog.resultList.GetColumnWidth(1)
         if self.scanDialog:
             self.setting['scanPos']  = self.scanDialog.GetPositionTuple()
-        
+
         dumped = yaml.dump(self.setting)
         f = open(self.settingfn, 'w')
         f.write(dumped)
-        
+
     def OnQuit(self, event):
         self.Close()
-        
+
     def OnClose(self, event):
         self.saveSetting()
         db.close()
         self.Destroy()
-        
+
     def OnAbout(self, event):
         wx.MessageBox("CDListPy " + __version__ + "     ", "About", wx.OK | wx.ICON_INFORMATION, self)
 
@@ -121,11 +126,11 @@ class MainFrame(wx.Frame):
         if self.scanDialog:
             self.scanDialog.Close()
             self.scanDialog = None
-            
+
         if not self.findDialog:
             self.findDialog = FindDialog(self, 1, 'Find')
             self.findDialog.expandFunc = self.expandNode
-            
+
         self.findDialog.Show()
         self.findDialog.Raise()
         pass
@@ -134,11 +139,11 @@ class MainFrame(wx.Frame):
         if self.findDialog:
             self.findDialog.Close()
             self.findDialog = None
-            
+
         if not self.scanDialog:
             self.scanDialog = ScanDialog(self, 1, 'Scan')
             self.scanDialog.reloadFunc = self.OnReload
-            
+
         self.scanDialog.Show()
         self.scanDialog.Raise()
 
@@ -148,11 +153,11 @@ class MainFrame(wx.Frame):
 
         if pyData:
             filedata = db.getFiledata(pyData)
-            
+
             for i in filedata:
                 filenode = self.tree.AppendItem(node, i[0])
                 self.tree.SetItemImage(filenode, self.IMG_FILE)
-                
+
         self.tree.SetPyData(node, None)
 
     def OnSelectItem(self, event):
@@ -161,9 +166,9 @@ class MainFrame(wx.Frame):
         while node:
             path.insert(0, self.tree.GetItemText(node))
             node = self.tree.GetItemParent(node)
-            
+
         self.SetStatusText('/'.join(path))
-        
+
     def loadDirdata(self):
         wx.BeginBusyCursor()
         self.tree.DeleteAllItems()
@@ -174,7 +179,7 @@ class MainFrame(wx.Frame):
 
         dirdata = db.getDirdata()
         self.nodeDic = {}
-        
+
         for i in dirdata:
             path = i[1].strip()
 
@@ -185,11 +190,11 @@ class MainFrame(wx.Frame):
                 path = path[:-1]
             if len(path) == 0:
                 continue
-            
+
             node = self.getNode(path)
             self.tree.SetItemHasChildren(node, True)
             self.tree.SetPyData(node, i[0]) # Set dir id
-        
+
         self.SetStatusText('Ready')
         self.tree.Expand(self.root)
         wx.EndBusyCursor()
@@ -219,7 +224,7 @@ class MainFrame(wx.Frame):
 
 
 class FindDialog(wx.Dialog):
-    
+
     def __init__(self, parent, id, title):
         wx.Dialog.__init__(self, parent, id, title, parent.setting['findPos'], style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 
@@ -228,17 +233,17 @@ class FindDialog(wx.Dialog):
         self.findText   = wx.TextCtrl(self, -1, '', size=(50, 22), style=wx.TE_PROCESS_ENTER)
         self.findButton = wx.Button(self, 1, 'Find', size=(50, 22))
         self.resultList = wx.ListCtrl(self, -1, size=(100, 38), style=wx.LC_REPORT)
-        
+
         self.il = wx.ImageList(16, 16)
         self.IMG_DIR  = self.il.Add(res.Dir.GetBitmap())
         self.IMG_FILE = self.il.Add(res.File.GetBitmap())
-        
+
         self.resultList.SetImageList(self.il, wx.IMAGE_LIST_SMALL)
-        
+
         self.Bind(wx.EVT_BUTTON, self.OnFind, id=1)
         self.findText.Bind(wx.EVT_CHAR, self.EvtChar, self.findText)
         self.resultList.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnItem)
-        
+
         self.resultList.InsertColumn(0, 'Path', width=parent.setting['findColumnPath'])
         self.resultList.InsertColumn(1, 'File', width=parent.setting['findColumnFile'])
 
@@ -249,12 +254,12 @@ class FindDialog(wx.Dialog):
         dialogSizer.Add(searchSizer,     0, wx.EXPAND|wx.ALL, 0)
         dialogSizer.Add(self.resultList, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 4)
         self.SetSizerAndFit(dialogSizer)
-        
+
         self.SetSize(parent.setting['findSize'])
-        
+
     def OnFind(self, event):
         self.resultList.DeleteAllItems()
-        
+
         result = db.findDirdata(self.findText.GetValue())
         for d in result:
             idx = self.resultList.InsertImageStringItem(self.resultList.GetItemCount(), d[0], self.IMG_DIR)
@@ -280,7 +285,7 @@ class ScanDialog(wx.Dialog):
 
     def __init__(self, parent, id, title):
         wx.Dialog.__init__(self, parent, id, title, parent.setting['scanPos'], (220, 140))
-        
+
         self.reloadFunc = None
 
         self.driveLabel = wx.StaticText(self, -1, 'Drive:', (10, 13))
@@ -288,7 +293,7 @@ class ScanDialog(wx.Dialog):
         self.nameLabel  = wx.StaticText(self, -1, 'Name:', (10, 43))
         self.nameText   = wx.TextCtrl(self, -1, '', (60, 40), (140, 22))
         self.scanButton = wx.Button(self, 1, 'Scan', (70, 80))
-        
+
         self.Bind(wx.EVT_BUTTON, self.OnScan, id=1)
 
         # Get CD-Rom drive
@@ -296,7 +301,7 @@ class ScanDialog(wx.Dialog):
             dt = win32file.GetDriveType(d)
             if dt == win32file.DRIVE_CDROM:
                 self.driveCombo.Append(d)
-                
+
         #self.driveCombo.Append('E:\\') # FOR SCAN TEST
 
         # Select first drive
@@ -310,7 +315,7 @@ class ScanDialog(wx.Dialog):
         if len(self.nameText.GetValue()) == 0:
             wx.MessageBox("Name is empty     ", "Error", wx.OK | wx.ICON_ERROR, self)
             return
-        
+
         # Scan
         for (dirpath, dirnames, filenames) in os.walk(self.driveCombo.GetValue()):
             dirdata = dirpath.replace(self.driveCombo.GetValue(), self.nameText.GetValue() + '/')
@@ -325,8 +330,8 @@ class ScanDialog(wx.Dialog):
 
         self.Close()
         self.reloadFunc(None) # Call parent
-        
-        
+
+
 class DB:
 
     def __init__(self, filename='CDListPy.db'):
@@ -336,7 +341,7 @@ class DB:
 
         self.conn = sqlite3.connect(filename)
         #self.conn.text_factory = str
-        
+
         self.c = self.conn.cursor()
 
         if initTable:
@@ -345,7 +350,7 @@ class DB:
             self.c.execute("create index id_idx    on dirdata  ( id )")
             self.c.execute("create index dirid_idx on filedata ( dirid )")
             self.conn.commit()
-        
+
     def test(self):
         # test
         self.c.execute("insert into dirdata (dirname) values ('test/123')")
@@ -353,11 +358,11 @@ class DB:
         self.c.execute("insert into filedata (dirid, filename) values (1, 'a111')")
         self.c.execute("insert into filedata (dirid, filename) values (2, 'b111')")
         self.conn.commit()
-        
+
         self.c.execute("select * from dirdata")
         for row in self.c:
             print row
-        
+
         self.close()
 
     def getDirdata(self):
@@ -373,7 +378,7 @@ class DB:
         self.c.execute("select id from dirdata where dirname = ?", [dirname])
         for row in self.c:
             return row[0]
-        
+
         self.c.execute("insert into dirdata (dirname) values (?)", [dirname])
 
         self.c.execute("select id from dirdata where dirname = ?", [dirname])
@@ -394,14 +399,14 @@ class DB:
     def importData(self):
         fd = open('dirdata.txt')
         ff = open('filedata.txt')
-        
+
         l = fd.readline().strip()
         while l:
             id, dirname = l.split('\t')
             dirname = dirname.decode('euc-kr') # To unicode
             print '/', id
             self.c.execute("insert into dirdata (dirname) values (?)", [dirname])
-            
+
             l = fd.readline().strip()
 
         l = ff.readline().strip()
@@ -410,7 +415,7 @@ class DB:
             filename = filename.decode('euc-kr') # To unicode
             print id
             self.c.execute("insert into filedata (dirid, filename) values (?, ?)", [dirid, filename])
-            
+
             l = ff.readline().strip()
 
         self.commit()
@@ -429,7 +434,7 @@ db = DB()
 if __name__ == '__main__':
     app = MainApp(False)
     app.MainLoop()
-    
+
     # TEST
     #db.test()
     #db.importData()
