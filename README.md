@@ -25,7 +25,7 @@ pip install PyYAML
 ./CDListPy.py
 ```
 
-- Optional: Run setup_img2py if you want to change the icon. This will make "res.py" file
+- Optional: Run setup_img2py if you want to change the icon. This will create a "res.py" file.
 ```
 ./setup_img2py.py
 ```
