@@ -289,7 +289,7 @@ class ScanDialog(wx.Dialog):
         self.reloadFunc = None
 
         self.driveLabel = wx.StaticText(self, -1, 'Drive:', (10, 13))
-        self.driveText  = wx.TextCtrl(self, -1, '', (60, 10), (140, 22)) # ComboBox(self, -1, '', (60, 10), (140, 22), style=wx.CB_READONLY)
+        self.driveText  = wx.TextCtrl(self, -1, '', (60, 10), (140, 22))
         self.nameLabel  = wx.StaticText(self, -1, 'Name:', (10, 43))
         self.nameText   = wx.TextCtrl(self, -1, '', (60, 40), (140, 22))
         self.scanButton = wx.Button(self, 1, 'Scan', (70, 80))
