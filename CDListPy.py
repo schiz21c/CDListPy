@@ -11,7 +11,7 @@ import wx
 import yaml
 import res
 
-__version__ = '1.0.0 (2011-06-13)'
+__version__ = '1.1.0 (2019-07-21)'
 
 
 class MainApp(wx.App):
