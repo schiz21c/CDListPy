@@ -288,7 +288,7 @@ class ScanDialog(wx.Dialog):
 
         self.reloadFunc = None
 
-        self.driveLabel = wx.StaticText(self, -1, 'Directory:', (10, 13))
+        self.driveLabel = wx.StaticText(self, -1, 'Dir:', (10, 13))
         self.driveText  = wx.TextCtrl(self, -1, '', (60, 10), (140, 22))
         self.nameLabel  = wx.StaticText(self, -1, 'Name:', (10, 43))
         self.nameText   = wx.TextCtrl(self, -1, '', (60, 40), (140, 22))
