@@ -1,10 +1,9 @@
 # CDListPy
-Catalog your CD Collections
+Catalog your CD Collections!
 
 ## Requirements
 - Python 2.x.x
 - wxPython
-- pywin32
 - yaml
 
 ## Deprecated
@@ -14,6 +13,11 @@ Catalog your CD Collections
 - wxPython
 ```
 pip install wxpython
+```
+
+- yaml
+```
+pip install PyYAML
 ```
 
 - Run CDListPy
