@@ -6,23 +6,22 @@ Catalog your CD Collections
 - wxPython
 - pywin32
 - yaml
-- py2exe (optional)
 
-## Known Issues
-- Works only in Windows
+## Deprecated
+- pywin32 related functions
 
-## Usage
-- Run img2py script at first. This will make res.py (Only once)
+## Installation
+- wxPython
 ```
-python setup_img2py.py
-```
-
-- Run main script
-```
-python CDListPy.py
+pip install wxpython
 ```
 
-- (optional) Run py2exe script to create EXE file
+- Run CDListPy
 ```
-python setup_py2exe.py
+./CDListPy.py
+```
+
+- Optional: Run setup_img2py if you want to change the icon. This will make "res.py" file
+```
+./setup_img2py.py
 ```
