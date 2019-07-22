@@ -14,20 +14,20 @@ You can list the contents of your data files.
 ## Installation
 - wxPython
 ```
-pip install wxpython
+$ pip install wxpython
 ```
 
 - yaml
 ```
-pip install PyYAML
+$ pip install PyYAML
 ```
 
 - Run CDListPy
 ```
-./CDListPy.py
+$ ./CDListPy.py
 ```
 
 - Optional: Run setup_img2py if you want to change the icon. This will create a "res.py" file.
 ```
-./setup_img2py.py
+$ ./setup_img2py.py
 ```
