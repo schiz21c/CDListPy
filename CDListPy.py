@@ -314,6 +314,8 @@ class ScanDialog(wx.Dialog):
         '''
 
     def OnScan(self, event):
+        if self.driveText.GetValue()[-1] != '/':
+            self.driveText.SetValue(self.driveText.GetValue() + '/')
         if len(self.nameText.GetValue()) == 0:
             wx.MessageBox("Name is empty     ", "Error", wx.OK | wx.ICON_ERROR, self)
             return
